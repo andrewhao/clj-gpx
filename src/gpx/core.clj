@@ -46,8 +46,8 @@
      :lat lat
      :lon lon}))
 
-(trace/deftrace get-data [xml]
-  "Finds t"
+(defn get-data [xml]
+  "Finds trk node content from XML node"
   (:content (find-tag (:content xml) :trk)))
 
 (defn get-points [path]
@@ -63,6 +63,7 @@
                  (:time (last coll)))))
 
 (defn calculate-distance [coll]
+  "Sum of the haversine distances between all points in the collection."
   (if (< (count coll) 2)
     0
     (+ (haversine (first coll)
