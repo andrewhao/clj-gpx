@@ -3,6 +3,7 @@
   :url "http://example.com/FIXME"
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [clj-time "0.6.0"]
+                 [org.clojure/tools.trace "0.7.8"]
                  [org.clojure/algo.generic "0.1.1"]]
   :main ^:skip-aot gpx.core
   :target-path "target/%s"

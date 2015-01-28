@@ -1,6 +1,8 @@
 (ns gpx.core-test
-  (:use clojure.test gpx.core clojure.algo.generic.math-functions)
-  (require [clj-time.core :as tc]))
+  (require [clj-time.core :as tc]
+           [clojure.test :refer :all]
+           [gpx.core :refer :all]
+           [clojure.algo.generic.math-functions :refer :all]))
 
 (deftest utility-functions
   (testing "value of R"
