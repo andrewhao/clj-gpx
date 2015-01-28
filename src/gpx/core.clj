@@ -3,6 +3,7 @@
             [clojure.algo.generic.math-functions :refer :all]
             [clj-time.format :as tf]
             [clj-time.core :as tc]
+            [clojure.tools.trace :as trace]
             [clojure.pprint :refer [pprint]])
   (:gen-class))
 
@@ -33,6 +34,7 @@
   (some (partial tag? tag) coll))
 
 (defn transform-trkpt [p]
+  "Given a trkseg node, extract relevant attributes into a map."
   (let [t   (find-tag (:content p) :time)
         ts  (tf/parse (first (:content t)))
         e   (find-tag (:content p) :ele)
@@ -45,12 +47,14 @@
      :lon lon}))
 
 (defn get-data [xml]
+  "Finds trk node content from XML node"
   (:content (find-tag (:content xml) :trk)))
 
 (defn get-points [path]
+  "Given path to a valid GPX file, find collection of <trkseg> nodes, and sort by time."
   (let [raw (get-data (parse-gpx path))
-        trks (:content (find-tag raw :trkseg))]
-    (sort-by :time (map transform-trkpt trks))))
+        trksegments (:content (find-tag raw :trkseg))]
+    (sort-by :time (map transform-trkpt trksegments))))
 
 (defn calculate-time [coll]
   "in seconds"
@@ -59,6 +63,7 @@
                  (:time (last coll)))))
 
 (defn calculate-distance [coll]
+  "Sum of the haversine distances between all points in the collection."
   (if (< (count coll) 2)
     0
     (+ (haversine (first coll)
